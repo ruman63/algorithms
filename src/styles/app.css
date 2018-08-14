@@ -1,0 +1,81 @@
+@tailwind preflight;
+body {
+    min-height: 100vh;
+}
+#app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 20px;
+    overflow: hidden;
+}
+  
+.level {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; 
+    margin-bottom: 20px;
+}
+  
+.score {
+    padding: 10px 5px;
+    border-radius: 2px;
+    line-height: 1;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+  
+.cell-container {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+    grid-template-rows: repeat(3, 50px);
+    justify-content: center;
+    transform: skewX(-4deg);
+}
+.cell {
+    cursor: pointer;
+    padding: 10px;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cell .only-parent-hover {
+    display: none;
+}
+.cell:hover .only-parent-hover {
+    display: block;
+}
+.sign-container {
+    height: 100%;
+    width: 100%;
+}
+.cell svg {
+    height: 100%;
+    width: 100%;
+  }
+  .cell.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+@media screen and (min-width: 480px) {
+    .cell-container {
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+    }
+    .score {
+      padding: 15px 20px;
+      border-radius: 5px;
+      font-size: 32px;
+    }
+}
+@media screen and (min-width: 768px) {
+    .cell-container {
+        grid-template-columns: repeat(3, 150px);
+        grid-template-rows: repeat(3, 150px);
+    }
+}
+@tailwind components;
+
+@tailwind utilities;
