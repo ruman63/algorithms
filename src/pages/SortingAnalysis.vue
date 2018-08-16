@@ -30,8 +30,8 @@
                 </button>
             </div>
         </div>
-        <div class="w-2/3">
-            <div ref="chartarea" class="ct-chart ct-minor-seventh px-8"></div>
+        <div class="w-full px-8">
+            <div ref="chartarea" class="ct-chart ct-minor-seventh"></div>
         </div>
     </div>
 </template>

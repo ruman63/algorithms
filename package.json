@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "build-dev": "vue-cli-service build --mode=development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -20,7 +21,8 @@
     "tailwindcss": "^0.6.4",
     "vue-loader": "^15.2.6",
     "vue-router": "^3.0.1",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.16",
+    "vue-worker": "^1.2.1"
   },
   "eslintConfig": {
     "root": true,

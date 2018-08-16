@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueWorker from 'vue-worker'
 import App from './App.vue'
 import routes from './routes'
+Vue.use(VueWorker);
 Vue.use(VueRouter);
 
 Array.prototype.swap = function(i, j) {
