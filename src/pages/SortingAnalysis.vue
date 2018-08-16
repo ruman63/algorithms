@@ -1,8 +1,17 @@
 <template>
-    <div class="flex flex-col items-center">
-        <h1 class="text-center my-8">
-            Sorting Analysis
-        </h1>
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center w-full">
+            <div class="flex-1 text-left">
+                <router-link to="/" class="px-3 py-2 rounded bg-grey-light hover:bg-teal hover:text-white no-underline text-black inline-flex items-center font-bold">
+                    <svg class="h-4 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"/></svg>
+                    Back
+                </router-link>
+            </div>
+            <h1 class="flex-1 text-center my-8 w-1/3">
+                Sorting Analysis
+            </h1>
+            <div class="flex-1"></div>
+        </div>
         <div class="flex justify-center text-left items-end mb-8">
             <div class="field flex flex-col mx-1 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold">From (N)</label>
@@ -30,9 +39,7 @@
                 </button>
             </div>
         </div>
-        <div class="w-full px-8">
-            <div ref="chartarea" class="ct-chart ct-minor-seventh"></div>
-        </div>
+        <div ref="chartarea" class="ct-chart ct-minor-seventh"></div>
     </div>
 </template>
 <script>
