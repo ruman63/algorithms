@@ -12,39 +12,74 @@
             </h1>
             <div class="flex-1"></div>
         </div>
-        <div class="flex justify-center text-left items-end mb-8">
-            <div class="field flex flex-col mx-1 w-32">
+        <div class="flex flex-wrap justify-center text-left items-end mb-8">
+            <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold">From (N)</label>
                 <input class="px-2 py-1 bg-white border rounded" type="text" v-model="start" placeholder="From">
             </div>
-            <div class="field flex flex-col mx-1 w-32">
+            <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold">To (N)</label>
                 <input class="px-2 py-1 bg-white border rounded" type="text" v-model="end" placeholder="To">
             </div>
-            <div class="field flex flex-col mx-1 w-32">
+            <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold">Steps</label>
                 <input class="px-2 py-1 bg-white border rounded" type="text" v-model.number="tickCount" placeholder="Steps">
             </div>
-            <div class="field flex flex-col mx-1 w-32">
+            <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold">Iterations</label>
                 <input class="px-2 py-1 bg-white border rounded" type="text" v-model="iterations" placeholder="Iterations">
             </div>
             <div class="field flex flex-col mx-1">
                 <button type="button" 
                     :disabled="calculating"
-                    class="px-4 py-1 bg-teal text-white font-semibold uppercase border border-teal-dark rounded" 
+                    class="px-4 py-1 bg-teal my-3 text-white font-semibold uppercase border border-teal-dark rounded" 
                     :class="{'bg-grey-dark': calculating}"
                     @click="analyse"
                     v-text="calculating ? 'Analysing...' : 'Analyse'">
                 </button>
             </div>
         </div>
-        <div ref="chartarea" class="ct-chart ct-minor-seventh"></div>
+        <div class="legends flex flex-wrap justify-center mb-4">
+            <div class="legend flex items-center mx-3 my-3">
+                <span class="inline-block bg-teal w-8 h-8 mr-2 border-2 border-grey-dark"></span>
+                <span>Quick Sort</span>
+            </div>
+            <div class="legend flex items-center mx-3 my-3">
+                <span class="inline-block bg-blue w-8 h-8 mr-2 border-2 border-grey-dark"></span>
+                <span>Insertion Sort</span>
+            </div>
+            <div class="legend flex items-center mx-3 my-3">
+                <span class="inline-block bg-purple w-8 h-8 mr-2 border-2 border-grey-dark"></span>
+                <span>Merge Sort</span>
+            </div>
+        </div>
+        <div class="mb-12">
+            <div ref="chartarea" class="ct-chart ct-minor-seventh"></div>
+        </div>
+        <div class="flex justify-center mb-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Array Size (N)</th>
+                        <th>Quick Sort</th>
+                        <th>Insertion Sort</th>
+                        <th>Merge Sort</th>
+                    </tr>
+                </thead>
+                <tbody v-if="comparisons.length">
+                    <tr v-for="(value, index) in valuesOfN" :key="index">
+                        <td v-text="value"></td>
+                        <td v-text="comparisons[0].length ? comparisons[0][index] : 0"></td>
+                        <td v-text="comparisons[1].length ? comparisons[1][index] : 0"></td>
+                        <td v-text="comparisons[2].length ? comparisons[2][index] : 0"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 <script>
 import { Line } from 'chartist';
-import "chartist/dist/chartist.css";
 import QuickSort from './../algorithms/quicksort';
 import MergeSort from './../algorithms/mergesort';
 import InsertionSort from './../algorithms/insertionsort';
@@ -57,6 +92,7 @@ export default {
             tickCount: 50,
             calculating: false,
             graph: null,
+            comparisons: [],
             algorithms: {
                 quickSort(array) {
                     return QuickSort.perform(array).comparisons;
@@ -68,6 +104,12 @@ export default {
                     return MergeSort.perform(array).comparisons;
                 }
             }
+        }
+    },
+    watch: {
+        comparisons() {
+            this.graph.data.series = (this.comparisons);
+            this.graph.update();
         }
     },
 
@@ -94,30 +136,21 @@ export default {
             let arrays = this.generate();
             this.graph.data.labels = this.valuesOfN;
             this.graph.data.series = [];
-            Object.keys(this.algorithms).forEach((key) => {
-                this.performOperation(arrays, this.algorithms[key]).then( comparisons => {
-                    this.calculating = false;
-                    this.graph.data.series.push(comparisons);
-                    this.graph.update();
-                })
+            this.comparisons = Object.keys(this.algorithms).map((key) => {
+                return this.performOperation(arrays, this.algorithms[key]);
             });
+            this.calculating = false;
         },
         performOperation(arrays, operation) {
-            return new Promise((resolve, reject) => {
-                try {
-                    let comparisonArray = [];
-                    for(let i=0; i< arrays.length; i++) {
-                        var totalComparisons = 0;
-                        for(let j=0; j< arrays[i].length; j++) {
-                            totalComparisons += operation(arrays[i][j]);
-                        }
-                        comparisonArray[i] = totalComparisons/arrays[i].length;
-                    }
-                    resolve(comparisonArray);
-                } catch(e) {
-                    reject();
+            let comparisonArray = [];
+            for(let i=0; i< arrays.length; i++) {
+                var totalComparisons = 0;
+                for(let j=0; j< arrays[i].length; j++) {
+                    totalComparisons += operation(arrays[i][j]);
                 }
-            });
+                comparisonArray[i] = totalComparisons/arrays[i].length;
+            }
+            return comparisonArray;
         },
         initGraph(series, labels) {
             this.graph = new Line(this.$refs.chartarea, { labels, series }, {
@@ -154,6 +187,11 @@ export default {
         }
     },
     mounted() {
+        this.comparisons = [
+            (new Array(this.valuesOfN.length)).fill(0),
+            (new Array(this.valuesOfN.length)).fill(0),
+            (new Array(this.valuesOfN.length)).fill(0),
+        ]
         this.initGraph([(new Array(this.valuesOfN.length)).fill(0)], this.valuesOfN);
         this.analyse();
     }

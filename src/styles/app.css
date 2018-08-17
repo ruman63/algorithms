@@ -1,6 +1,10 @@
+@import "chartist/dist/chartist.css";
 @tailwind preflight;
 body {
     min-height: 100vh;
+}
+.table td, .table th{
+    @apply .border .px-2 .py-1;
 }
 #app {
     -webkit-font-smoothing: antialiased;
@@ -76,6 +80,29 @@ body {
         grid-template-rows: repeat(3, 150px);
     }
 }
+
+
+.ct-series .ct-line {
+    stroke: currentColor
+}
+.ct-series .ct-point {
+    stroke: currentColor
+}
+.ct-series .ct-area {
+    fill: currentColor
+}
+.ct-series.ct-series-a .ct-area, .ct-series.ct-series-a .ct-point, .ct-series.ct-series-a .ct-line {
+    @apply .text-teal;
+}
+
+.ct-series.ct-series-b .ct-area, .ct-series.ct-series-b .ct-point, .ct-series.ct-series-b .ct-line {
+    @apply .text-blue;
+}
+
+.ct-series.ct-series-c .ct-area, .ct-series.ct-series-c .ct-point, .ct-series.ct-series-c .ct-line  {
+    @apply .text-purple;
+}
 @tailwind components;
 
 @tailwind utilities;
+
