@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="font-sans">
     <transition name="fade">
-      <router-view class="absolute pin-x pin-y"></router-view>
+      <router-view class="absolute pin-x pin-y px-2"></router-view>
     </transition>
   </div>
 </template>
