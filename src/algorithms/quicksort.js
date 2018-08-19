@@ -9,27 +9,30 @@ export default class QuickSort {
     partition(beg, end) {
         let up = beg;
         let dwn = end;
-        let piv = beg;    //pivot element
+        let piv = Math.round(Math.random() * this.array.length * 10) % (end-beg+1) + beg;    //pivot element
+        let pivEl = this.array[piv];
         while( up < dwn ) {
-            while( this.array[up] <= this.array[piv]) {
-                up++;
+            while( this.array[up] <= pivEl) {
+                up = up + 1;
                 this.comparisons++;
             }
             this.comparisons++;
-            while( this.array[dwn] > this.array[piv] && dwn > beg) {
-                dwn--;
+            while( this.array[dwn] > pivEl) {
+                dwn = dwn - 1;
                 this.comparisons++;
             }
             this.comparisons++;
-            if(up < dwn) {
+            if(up < dwn ){
                 this.array.swap(up, dwn);
                 this.comparisons++;
             }
             this.comparisons++;
         }
         this.comparisons++;
-        this.array.swap(up, piv);
-        return up;
+        this.array[beg] = this.array[dwn];
+        this.array[dwn] = pivEl;
+        this.comparisons++;
+        return dwn;
     }
     
     sort() {
