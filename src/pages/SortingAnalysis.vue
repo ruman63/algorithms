@@ -20,19 +20,19 @@
         <div class="flex flex-wrap justify-center text-left items-end mb-8">
             <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">From (N)</label>
-                <input class="px-2 py-1 bg-white border rounded" type="text" v-model="start" placeholder="From">
+                <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="start" placeholder="From">
             </div>
             <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">To (N)</label>
-                <input class="px-2 py-1 bg-white border rounded" type="text" v-model="end" placeholder="To">
+                <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="end" placeholder="To">
             </div>
             <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">Steps</label>
-                <input class="px-2 py-1 bg-white border rounded" type="text" v-model.number="tickCount" placeholder="Steps">
+                <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="tickCount" placeholder="Steps">
             </div>
             <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">Iterations</label>
-                <input class="px-2 py-1 bg-white border rounded" type="text" v-model="iterations" placeholder="Iterations">
+                <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="iterations" placeholder="Iterations">
             </div>
             <div class="field flex flex-col mx-1">
                 <button type="button" 
@@ -127,7 +127,7 @@ export default {
         },
         valuesOfN() {
             return (new Array(this.tickCount)).fill(0).map((el, index) => {
-                return parseInt(this.start) + (index * this.stepSize);
+                return this.start + (index * this.stepSize);
             });
         }
     },
@@ -159,7 +159,7 @@ export default {
                 for(let j=0; j< arrays[i].length; j++) {
                     totalComparisons += operation(arrays[i][j]);
                 }
-                comparisonArray[i] = Math.round(totalComparisons/arrays[i].length);
+                comparisonArray[i] = totalComparisons/arrays[i].length;
             }
             return comparisonArray;
         },
