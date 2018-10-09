@@ -7,6 +7,7 @@ export default class QuickSort {
     }
 
     partition(beg, end) {
+        let localComparisons = 0;
         let up = beg;
         let dwn = end;
         let piv = beg;
@@ -14,35 +15,37 @@ export default class QuickSort {
         while( up < dwn ) {
             while( this.array[up] <= pivEl) {
                 up = up + 1;
-                this.comparisons++;
+                localComparisons++;
             }
-            this.comparisons++;
+            localComparisons++;
             while( this.array[dwn] > pivEl) {
                 dwn = dwn - 1;
-                this.comparisons++;
+                localComparisons++;
             }
-            this.comparisons++;
+            localComparisons++;
             if(up < dwn ){
                 this.array.swap(up, dwn);
             }
         }
         this.array[beg] = this.array[dwn];
         this.array[dwn] = pivEl;
-        return dwn;
+        return [dwn, localComparisons];
     }
     
     sort(start, end) {
         if(start >= end) {
-            return;
+            return 0;
         }
-        let piv = this.partition(start, end);
-        this.sort(start, piv-1);
-        this.sort(piv+1, end);
+        let values = this.partition(start, end);
+        let piv = values[0];
+        let comparisons = values[1];
+
+        return comparisons + this.sort(start, piv-1) + this.sort(piv+1, end);
     }
     
     static perform (array) {
         let algo = new QuickSort(array);
-        algo.sort(0, array.length-1);
+        algo.comparisons = algo.sort(0, array.length-1);
         return algo;
     }
 }
