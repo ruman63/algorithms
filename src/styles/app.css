@@ -92,15 +92,32 @@ body {
     fill: currentColor
 }
 .ct-series.ct-series-a .ct-area, .ct-series.ct-series-a .ct-point, .ct-series.ct-series-a .ct-line {
-    @apply .text-teal;
+    @apply .text-blue;
 }
 
 .ct-series.ct-series-b .ct-area, .ct-series.ct-series-b .ct-point, .ct-series.ct-series-b .ct-line {
-    @apply .text-blue;
+    @apply .text-teal;
 }
 
 .ct-series.ct-series-c .ct-area, .ct-series.ct-series-c .ct-point, .ct-series.ct-series-c .ct-line  {
     @apply .text-purple;
+}
+
+.spinner::after {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-left: 10px;
+    border: 2px solid whitesmoke;
+    border-bottom-color: transparent;
+    animation: rotate 0.7s infinite linear;
+}
+@keyframes rotate {
+    to {
+        transform: rotate(360deg)
+    }
 }
 @tailwind components;
 

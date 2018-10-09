@@ -27,8 +27,8 @@
                 <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="end" placeholder="To">
             </div>
             <div class="field flex flex-col mx-1 my-3 w-32">
-                <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">Steps</label>
-                <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="tickCount" placeholder="Steps">
+                <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">Step Size</label>
+                <input class="px-2 py-1 bg-white border rounded w-full focus:border-teal" type="number" v-model.number="stepSize" placeholder="Steps">
             </div>
             <div class="field flex flex-col mx-1 my-3 w-32">
                 <label for="" class="uppercase text-xs tracking-wide text-grey-dark font-semibold mb-1">Iterations</label>
@@ -37,8 +37,8 @@
             <div class="field flex flex-col mx-1">
                 <button type="button" 
                     :disabled="calculating"
-                    class="px-4 py-1 bg-teal my-3 text-white font-semibold uppercase border border-teal-dark rounded" 
-                    :class="{'bg-grey-dark': calculating}"
+                    class="px-4 py-1 my-3 text-white font-semibold uppercase border border-teal-dark rounded" 
+                    :class="{'bg-grey-dark pointer-events-none cursor-not-allowed spinner': calculating, 'bg-teal': !calculating}"
                     @click="analyse"
                     v-text="calculating ? 'Analysing...' : 'Analyse'">
                 </button>
@@ -46,12 +46,12 @@
         </div>
         <div class="legends flex flex-wrap justify-center mb-4">
             <div class="legend flex items-center mx-3 my-3">
-                <span class="inline-block bg-teal w-8 h-8 mr-2 border-2 border-grey-dark"></span>
-                <span>Quick Sort</span>
-            </div>
-            <div class="legend flex items-center mx-3 my-3">
                 <span class="inline-block bg-blue w-8 h-8 mr-2 border-2 border-grey-dark"></span>
                 <span>Insertion Sort</span>
+            </div>
+            <div class="legend flex items-center mx-3 my-3">
+                <span class="inline-block bg-teal w-8 h-8 mr-2 border-2 border-grey-dark"></span>
+                <span>Quick Sort</span>
             </div>
             <div class="legend flex items-center mx-3 my-3">
                 <span class="inline-block bg-purple w-8 h-8 mr-2 border-2 border-grey-dark"></span>
@@ -94,19 +94,19 @@ import InsertionSort from './../algorithms/insertionsort';
 export default {
     data() {
         return {
-            start: 25,
+            start: 20,
             iterations: 20,
             end: 2000,
-            tickCount: 25,
-            calculating: false,
+            stepSize: 20,
+            calculating: true,
             graph: null,
             comparisons: [],
             algorithms: {
-                quickSort(array) {
-                    return QuickSort.perform(array).comparisons;
-                },
                 insertionSort(array) {
                     return InsertionSort.perform(array).comparisons;
+                },
+                quickSort(array) {
+                    return QuickSort.perform(array).comparisons;
                 },
                 mergeSort(array) {
                     return MergeSort.perform(array).comparisons;
@@ -122,11 +122,11 @@ export default {
     },
 
     computed: {
-        stepSize() {
-            return Math.ceil((this.end - this.start) / (this.tickCount - 1) );
+        totalSteps() {
+            return Math.ceil((this.end - this.start + 1) / (this.stepSize) );
         },
         valuesOfN() {
-            return (new Array(this.tickCount)).fill(0).map((el, index) => {
+            return (new Array(this.totalSteps)).fill(0).map((el, index) => {
                 return this.start + (index * this.stepSize);
             });
         }
